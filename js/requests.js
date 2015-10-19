@@ -91,8 +91,21 @@ function Requests() {
 // PUT Request
         else if (obj.method == 'put') {
             //console.log("PUT Request");
-            var user = this.getUserById(parseInt(obj.data.id));
+            obj.data.id  = parseInt(obj.data.id);
+            var user = this.getUserById(obj.data.id);
             user = obj.data;
+
+            this.mapUserList(function(value,index){
+
+                if(value.id == obj.data.id){
+                    return obj.data;
+                }
+
+                return value;
+
+            });
+
+
 
             return $.extend({}, user);
         }
@@ -122,7 +135,7 @@ function Requests() {
 // Map User By Id
     this.mapUserList = function (func) {
         for (var i = 0; i < this.usersList.length; i++) {
-            func(this.usersList[i]);
+            this.usersList[i] =  func(this.usersList[i],i);
         }
     }
 

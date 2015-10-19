@@ -69,7 +69,7 @@ $(function() {
         console.log("Edit",$(this).data("user-id"));
         $(this).data("user-id");
 
-        $('#modal-id').modal();
+
 
         requests.ajax({
             url:"users",
@@ -79,9 +79,26 @@ $(function() {
                 $.each(data,function(index,value){
                     $('#user-form #'+index).val(value);
                 });
+
+                $('#modal-id').modal();
             }
         });
     });
+
+
+    $(document).on("click",".create",function(){
+        console.log("Edit",$(this).data("user-id"));
+        $(this).data("user-id");
+
+        $('#modal-id').modal();
+
+        $("#user-form input, #user-form textarea, #user-form select").each(function(index,value){
+            $(value).val('');
+        });
+
+    });
+
+
 
 
     $(document).on('click','.save',function(){
@@ -89,13 +106,8 @@ $(function() {
         serializedData =  $('form#user-form').serializeArray();
 
         $.each(serializedData,function(index,value){
-            console.log(value);
              formData[value.name] = value.value;
         });
-
-
-        console.log(formData);
-
 
         if(formData.hasOwnProperty('id') && formData.id ){
             method = "put";
@@ -111,6 +123,7 @@ $(function() {
             data:formData,
             success:function(data){
                console.log("Added");
+                $('#myModal').modal('hide');
                 drawList();
             }
         });
